@@ -2,7 +2,7 @@
 // all other vertices in the given graph. Dijkstra’s algorithm doesn’t work for
 // graphs with negative weight cycles, it may give correct results for a graph
 // with negative edges.
-// Time Complexity: O (v + Elog V)
+// Time Complexity: O (v + Elog V) // for this code
 // (mainly the complexity is O (V ^ 2))
 // Tutorial: https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/
 
@@ -11,41 +11,40 @@ using namespace std;
 //
 #define ll long long
 #define ull unsigned long long
-#define pb push_back
 #define mx 100010
 #define mod 1000000007
 #define inf INT_MAX
 #define pi acos(-1)
 #define endl '\n'
-#define fin freopen("input", "r", stdin)
+#define pb push_back
+#define pll pair<ll, ll>
 #define Fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
 //
 ll node, edge;
-vector<pair<ll, ll>> graph[mx]; // {weight, node}
-vector<bool> sptSet(mx, 0); // visited array
-vector<ll> dis(mx, inf); // shortest distance
+vector<pll> adj[mx]; // {weight, node}
+vector<ll> dis(mx, inf); // distance of all node from root
+vector<bool> visited(mx, 0);
 
 void dijkstra(ll sNode) {
     dis[sNode] = 0;
-    multiset<pair<ll, ll>> s; // {weight, node}
-    s.insert({ 0, sNode });
 
-    while (!s.empty()) {
-        pair<ll, ll> p = *s.begin();
-        s.erase(s.begin());
+    multiset<pll> ms;
+    ms.insert({0, sNode});
 
-        ll x = p.second; // node
-        if (sptSet[x]) continue; // it is used to avoid negative cycle
-        sptSet[x] = true;
+    while(!ms.empty()) {
+        pll p = *ms.begin();
+        ms.erase(*ms.begin());
+        ll cNode = p.second;
 
-        for (ll i = 0; i < graph[x].size(); i++) {
-            ll w = graph[x][i].first, v = graph[x][i].second;
+        if (visited[cNode]) continue; // avoiding negative cycle and revisit
+        visited[cNode] = true;
 
-            if (dis[x] + w < dis[v]) {
-                dis[v] = dis[x] + w;
-                // to take the minimum weighted vertex, we should also enter the
-                // weight of the vertex in the set.
-                s.insert({ dis[v], v });
+        for (ll i = 0; i < adj[cNode].size(); i++) {
+            ll tNode = adj[cNode][i].second, weight = adj[cNode][i].first;
+            if (dis[cNode] + weight < dis[tNode]) {
+                dis[tNode] = dis[cNode] + weight;
+
+                ms.insert({dis[tNode], tNode});
             }
         }
     }
@@ -54,12 +53,13 @@ int main() {
     cin >> node >> edge;
 
     for (ll i = 0; i < edge; i++) {
-        ll a, b, weight;
-        cin >> a >> b;
-        cin >> weight;
-        graph[a].pb({ weight, b });
-        graph[b].pb({ weight, a });
+        ll eFrom, eTo, weight;
+        cin >> eFrom >> eTo >> weight;
+
+        adj[eFrom].pb({weight, eTo});
+        adj[eTo].pb({weight, eFrom});
     }
+
     dijkstra(0);
 
     cout << "Vertex   " << "Distance from source" << endl;

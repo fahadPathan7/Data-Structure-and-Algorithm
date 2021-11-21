@@ -1,15 +1,15 @@
-/* 
-This data structure provides the following capabilities. We are given several elements, each of which is a separate set. 
-A DSU will have an operation to combine any two sets, and it will be able to tell in which set a specific element is. 
-The classical version also introduces a third operation, it can create a set from a new element. 
+/*
+This data structure provides the following capabilities. We are given several elements, each of which is a separate set.
+A DSU will have an operation to combine any two sets, and it will be able to tell in which set a specific element is.
+The classical version also introduces a third operation, it can create a set from a new element.
 */
 // tutorial : https://cp-algorithms.com/data_structures/disjoint_set_union.html
 
 #include <bits/stdc++.h>
 using namespace std;
 
-// The implementation is with size. and the implementation with rank is given below.
-int parent[10000], size[10000];
+// The implementation is with size (node count). and the implementation with rank is given below.
+int parent[10000], nodeCount[10000];
 
 int find_set(int v) {
     if (v == parent[v])
@@ -19,17 +19,17 @@ int find_set(int v) {
 
 void make_set(int v) {
     parent[v] = v;
-    size[v] = 1;
+    nodeCount[v] = 1;
 }
 
 void union_sets(int a, int b) {
     a = find_set(a);
     b = find_set(b);
     if (a != b) {
-        if (size[a] < size[b])
+        if (nodeCount[a] < nodeCount[b])
             swap(a, b);
         parent[b] = a;
-        size[a] += size[b];
+        nodeCount[a] += nodeCount[b];
     }
 }
 
@@ -37,7 +37,8 @@ int main()
 {
 }
 
-/* Here is the implementation of union by rank based on the depth of the trees (by rank):
+/*
+// Here is the implementation of union by rank based on the depth of the trees (by rank):
 // The rank of a node using rank union by size indicate how many nodes are in the subtree of that node.
 void make_set(int v) {
     parent[v] = v;
@@ -54,4 +55,5 @@ void union_sets(int a, int b) {
         if (rank[a] == rank[b])
             rank[a]++;
     }
-} */
+}
+*/

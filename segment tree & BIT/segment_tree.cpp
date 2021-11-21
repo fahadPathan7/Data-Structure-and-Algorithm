@@ -1,5 +1,6 @@
 // Time Complexity: O(nlog n)
 // Tutorial: http://www.shafaetsplanet.com/?p=1557
+
 #include <bits/stdc++.h>
 using namespace std;
 //
@@ -61,6 +62,7 @@ ll query(ll node, ll begin, ll end, ll i, ll j) {
 
 	return a + b;
 }
+
 int main() {
 	ll n;
 

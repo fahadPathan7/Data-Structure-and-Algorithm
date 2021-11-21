@@ -1,44 +1,45 @@
-// Time complexity: O(v + e)
+// time complexity: O(v + e)
+
 #include <bits/stdc++.h>
 using namespace std;
 //
 #define ll long long
 #define ull unsigned long long
-#define pb push_back
 #define mx 100010
 #define mod 1000000007
 #define inf INT_MAX
 #define pi acos(-1)
 #define endl '\n'
-#define fin freopen("input", "r", stdin)
+#define pb push_back
+#define pll pair<ll, ll>
 #define Fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
 //
-#define white 1
-#define black 2
-
-ll node, edge, dis[mx], color[mx], parent[mx];
+ll node, edge;
+vector<ll> dis(mx), parent(mx);
+vector<bool> visited(mx, 0);
 vector<vector<ll>> adj(mx);
 
-void bfs(ll startingNode) {
-    for (ll i = 0; i < node; i++) color[i] = white;
+void bfs(ll sNode) {
+    parent[sNode] = -1;
+    dis[sNode] = 0;
 
-    parent[startingNode] = -1;
-    dis[startingNode] = 0;
-    queue <ll> q;
-    q.push(startingNode);
+    queue<ll> q;
+    q.push(sNode);
 
-    while (!q.empty()) {
-        ll x = q.front();
+    while(!q.empty()) {
+        ll cNode = q.front();
         q.pop();
 
-        for (ll i = 0; i < adj[x].size(); i++) {
-            if (color[adj[x][i]] == white) {
-                parent[adj[x][i]] = x;
-                dis[adj[x][i]] = dis[x] + 1;
-                q.push(adj[x][i]);
+        for (ll i = 0; i < adj[cNode].size(); i++) {
+            if (!visited[adj[cNode][i]]) {
+                parent[adj[cNode][i]] = cNode;
+                dis[adj[cNode][i]] = dis[cNode] + 1;
+
+                q.push(adj[cNode][i]);
             }
         }
-        color[x] = black;
+
+        visited[cNode] = 1;
     }
 }
 int main() {
@@ -47,11 +48,12 @@ int main() {
     for (ll i = 0; i < edge; i++) {
         ll a, b;
         cin >> a >> b;
+
         adj[a].pb(b);
         adj[b].pb(a); // undirected edge
     }
 
-    bfs(0); // single source.
+    bfs(0); // single source
 
     //Todo: can print traversal order, parent, label and many more...
 }

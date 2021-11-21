@@ -1,68 +1,50 @@
-// Time complexity: O(v+e)
-// This is undirected multi source dfs code
+// time complexity: O (v + e)
+
 #include <bits/stdc++.h>
 using namespace std;
 //
 #define ll long long
 #define ull unsigned long long
-#define pb push_back
 #define mx 100010
 #define mod 1000000007
 #define inf INT_MAX
 #define pi acos(-1)
 #define endl '\n'
-#define fin freopen("input", "r", stdin)
+#define pb push_back
+#define pll pair<ll, ll>
 #define Fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
 //
-#define white 1
-#define grey 2
-#define black 3
-int Time = 1;
-int stime[mx], etime[mx], node, edge;
-int color[mx];
+ll node, edge, t = 1;
+vector<ll> sTime(mx), eTime(mx);
 vector<ll> traverse;
-vector<vector<ll>> v(mx);
+vector<ll> adj[mx];
+vector<bool> visited(mx, 0);
 
-void dfsVisit(ll x) {
-    traverse.pb(x);
-    color[x] = grey;
-    stime[x] = Time++;
+void dfs(ll cNode) {
+    traverse.pb(cNode);
+    visited[cNode] = 1;
+    sTime[cNode] = t++;
 
-    for (ll i = 0; i < v[x].size(); i++) {
-        if (color[v[x][i]] == white) dfsVisit(v[x][i]);
+    for (ll i = 0; i < adj[cNode].size(); i++) {
+        if (!visited[adj[cNode][i]]) {
+            dfs(adj[cNode][i]);
+        }
     }
 
-    color[x] = black;
-    etime[x] = Time++;
+    eTime[cNode] = t++;
 }
-void dfs() {
-    for (ll i = 0; i < node; i++) {
-        color[i] = white;
-    }
-
-    // for multi source dfs
-    for (ll i = 0; i < node; i++) {
-        if (color[i] == white) dfsVisit(i);
-    }
-}
-
 int main() {
-
     cin >> node >> edge;
+
     for (ll i = 0; i < edge; i++) {
         ll a, b;
         cin >> a >> b;
-        v[a].pb(b);
-        v[b].pb(a); // for undirected edges
+
+        adj[a].pb(b);
+        adj[b].pb(a); // for unorder edge
     }
 
-    dfs();
+    dfs(0); // single source dfs with 0 as starting node
 
-    // printing the traversal order
-    for (ll i = 0; i < traverse.size(); i++) cout << traverse[i] << " ";
-    cout << endl;
-    // printing the starting and ending time of the nodes
-    for (ll i = 0; i < node; i++) {
-        cout << "Node " << i << ": " << stime[i] << " " << etime[i] << endl;
-    }
+    //Todo: can print traversal order, staring and ending time. and many more ...
 }

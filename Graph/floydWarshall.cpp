@@ -31,7 +31,7 @@ int main() {
     cin >> node;
 
     // entering the weights of every vertex from the other vertices.
-    // if there is no edge , enter -1.
+    //! if there is no edge , enter -1.
     for (ll i = 0; i < node; i++) {
         for (ll j = 0; j < node; j++) {
             cin >> graph[i][j];

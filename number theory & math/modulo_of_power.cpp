@@ -15,15 +15,15 @@ using namespace std;
 //
 ll F(ll n, ll p)
 {
-    if (p==0) return 1;
-    if (p%2==0)
+    if (p == 0) return 1;
+    if (p % 2 == 0)
     {
-        ll ret = F(n, p/2);
-        return ((ret%mod)*(ret%mod))%mod;
+        ll ret = F(n, p / 2);
+        return ((ret % mod) * (ret % mod)) % mod;
     }
-    else return ((n%mod)*F(n,p-1)%mod)%mod;
+    else return ((n % mod) * F(n, p - 1) % mod) % mod;
 }
 int main()
 {
-    cout<<F(2,10);
+    cout << F(2, 10); // (base, exponent)
 }

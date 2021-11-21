@@ -1,6 +1,6 @@
-// Sparse table is a data structure that allows 
-// answering queries of finding minimum or maximum 
-// in a range in an array in O(1) time after O(nlogn) preprocessing. 
+// Sparse table is a data structure that allows
+// answering queries of finding minimum or maximum
+// in a range in an array in O(1) time after O(nlogn) preprocessing.
 // tutorial : http://adilet.org/blog/sparse-table/
 
 #include <bits/stdc++.h>
@@ -22,7 +22,7 @@ int n;
 int logs[MAXN];
 int a[MAXN];
 int table[MAXLOG][MAXN];
-//table[i][j] means the minimum in the subrange of length 2^i starting from the position j. Here are some values of table[i][j] in our example array a: 
+//table[i][j] means the minimum in the subrange of length 2^i starting from the position j. Here are some values of table[i][j] in our example array a:
 
 void computeLogs() // find the maximum power of 2 for which 2^logs[i] <= i.
 {

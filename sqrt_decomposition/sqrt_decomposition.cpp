@@ -1,55 +1,72 @@
 // Time complexity O(sqrt(n))
 // Tutorial : http://www.shafaetsplanet.com/?p=3416
+
 #include <bits/stdc++.h>
 using namespace std;
+//
+#define ll long long
+#define ull unsigned long long
+#define mx 100010
+#define mod 1000000007
+#define inf INT_MAX
+#define pi acos(-1)
+#define endl '\n'
+#define pb push_back
+#define pll pair<ll, ll>
+#define Fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+//
+ll segmentSize, segment[mx];
+ll n, input[mx];
 
-int segment[10000];
-int preprocess(int input[], int n) {
-    int current_segment = -1;
-    int segment_size = sqrt(n); // should take ceiling . (my opinion)
+void process() {
+    segmentSize = ceil(sqrt(n)); // taking ceiling is my opinion
+    ll curSegment = -1;
 
-    for (int i = 0; i < n; i++) {
-        if (i % segment_size == 0) {
-            current_segment++;  //new segment
-        }
-        segment[current_segment] += input[i];
+    for (ll i = 0; i < n; i++) {
+        if (i % segmentSize == 0) curSegment++;
+        segment[curSegment] += input[i];
     }
-
-    return segment_size;
 }
-int query(int input[], int segment_size, int l, int r) {
-    int sum = 0;
-
-    //loop the first segment
-    //until we reach r or a starting index
-
-    while (l < r && l % segment_size != 0) {
-        sum += input[l];
-        l++;
+ll query(ll begin, ll end) {
+    ll sum = 0, i = begin;
+    while(i <= end) {
+        if (i % segmentSize == 0) break;
+        sum += input[i++];
     }
-
-    //Loop until we reach
-    //segment that contains r
-    while (l + segment_size <= r) {
-        sum += segment[l / segment_size];
-        l += segment_size;
+    while(i + segmentSize <= end) {
+        sum += segment[i / segmentSize];
+        i += segmentSize;
     }
-
-    //loop until r
-    while (l <= r) {
-        sum += input[l];
-        l++;
-    }
+    while(i <= end) sum += input[i++];
 
     return sum;
 }
-void update(int input[], int segment_size, int i, int val) {
-    int segment_no = i / segment_size;
-
-    segment[segment_no] -= input[i];
-    segment[segment_no] += val;
-    input[i] = val;
+void update(ll idx, ll val) {
+    segment[idx / segmentSize] -= input[idx];
+    segment[idx / segmentSize] += val;
+    input[idx] = val;
 }
-int main()
-{
+int main() {
+    // taking values of input array
+    cin >> n;
+    for (ll i = 0; i < n; i++) cin >> input[i];
+
+    // doing query and update
+    ll m;
+    cin >> m;
+    for (ll i = 0; i < m; i++) {
+        ll choice;
+        cin >> choice; // 1 to query, 2 to update
+
+        if (choice == 1) {
+            ll begin, end;
+            cin >> begin >> end;
+            cout << query(begin, end);
+        }
+        else if (choice == 2) {
+            ll idx, val;
+            cin >> idx, val;
+            update(idx, val);
+        }
+    }
 }
